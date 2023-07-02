@@ -29,7 +29,7 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): Responsable
     {
         /** @var \App\Models\User */
         $user = $request->user();
@@ -83,9 +83,11 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $invoice)
+    public function show(Invoice $invoice): Responsable
     {
-        // TODO:
+        return (new InvoiceResource(
+            $invoice->load(['customer', 'invoiceItems' => ['product']])
+        ))->additional(['message' => 'Get invoice.']);
     }
 
     /**
