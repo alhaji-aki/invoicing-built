@@ -19,10 +19,10 @@ class ProductFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'title' => $this->faker->words(4, true),
-            'description' => $this->faker->paragraph(),
-            'price' => $this->faker->numberBetween(100, 1_000),
-            'quantity' => $this->faker->numberBetween(0, 100),
+            'title' => fake()->words(4, true),
+            'description' => fake()->paragraph(),
+            'price' => fake()->numberBetween(100, 1_000),
+            'quantity' => fake()->numberBetween(0, 100),
         ];
     }
 }
