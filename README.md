@@ -9,7 +9,7 @@ This is a basic invoicing api for users to manage their invoices.
 - [ ] An invoice should have a customer
 - [ ] An invoice can have at least 1 item
 - [ ] Each item should have unit price, quantity, amount and description
-- [ ] User Authentication and authorization
+- [x] User Authentication and authorization
 
 ## Project Setup
 
