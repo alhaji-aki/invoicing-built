@@ -8,6 +8,9 @@ use App\Http\Requests\Invoice\StoreInvoiceRequest;
 use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Stringable;
 
 class InvoiceController extends Controller
 {
@@ -26,9 +29,42 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // TODO:
+        /** @var \App\Models\User */
+        $user = $request->user();
+
+        $invoices = $user->invoices()
+            ->getQuery()
+            ->with(['customer'])
+            ->when($request->filled('query'), function (Builder $query) use ($request) {
+                $searchTerm = $request->string('query')
+                    ->trim()
+                    ->tap(function (Stringable $value) {
+                        abort_if($value->length() < 3, 400, 'The search term should be 3 or more characters');
+                    })
+                    ->pipe('htmlspecialchars')
+                    ->toString();
+
+                return $query->where('invoice_no', $searchTerm);
+            })
+            ->when($request->filled('status'), function (Builder $query) use ($request) {
+                $states = ['past_due', 'pending'];
+
+                $state = $request->string('status')->toString();
+
+                abort_if(!in_array($state, $states), 400, 'The status submitted is invalid.');
+
+                return match ($state) {
+                    'pending' => $query->where('due_at', '>', now()),
+                    'past_due' => $query->where('due_at', '<=', now()),
+                    default => $query
+                };
+            })
+            ->paginate()
+            ->withQueryString();
+
+        return InvoiceResource::collection($invoices)->additional(['message' => 'Get invoices.']);
     }
 
     /**
