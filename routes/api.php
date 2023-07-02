@@ -8,4 +8,7 @@ Route::prefix('auth')->group(function () {
 
     Route::post('login', [Auth\LoginController::class, 'store'])->name('auth.login');
     Route::post('logout', [Auth\LoginController::class, 'destroy'])->name('auth.logout');
+
+    Route::post('forgot-password', Auth\ForgotPasswordController::class)->name('auth.password.forgot');
+    Route::post('reset-password', Auth\ResetPasswordController::class)->name('auth.password.reset');
 });

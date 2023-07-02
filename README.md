@@ -18,7 +18,9 @@ This is a basic invoicing api for users to manage their invoices.
 - Copy `.env.example` to `.env` and fill your values
 - Run `php artisan key:generate` to generate app key
 - Fill database and mail credentials in `.env` file
+- Set the `APP_FRONTEND_URL` key in the `.env` to the base url of your frontend application
 - Run `php artisan migrate --seed`, this will seed a default user with email `user@invoicing-app.test` and password `password`
+- Start queue worker using `php artisan queue:listen` or `php artisan queue:work` if your `QUEUE_CONNECTION` in the `.env` file is not sync
 - You can get entire postman collection documentation [here](https://documenter.getpostman.com/view/2848345/2s93zB6hgy)
 
 ## Testing
