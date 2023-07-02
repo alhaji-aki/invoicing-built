@@ -80,11 +80,12 @@ class CreateInvoiceAction
             ->map(function (array $item) use ($products) {
                 $product = $products->where('uuid', $item['product_id'])->first() ?? new Product();
 
+                /** @var array{unit_price: float, product_id: int, amount: float, product: Product, description: string, quantity: int} */
                 return [
                     ...$item,
-                    'unit_price' => $unitPrice = $product->formatted_price,
+                    'unit_price' => $product->formatted_price,
                     'product_id' => $product->id,
-                    'amount' => $unitPrice * $item['quantity'],
+                    'amount' => $product->formatted_price * $item['quantity'],
                     'product' => $product,
                 ];
             });
