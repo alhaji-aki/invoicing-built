@@ -37,18 +37,6 @@ class InvoicePolicy
     }
 
     /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Invoice $invoice): Response|bool
-    {
-        if ($invoice->user()->isNot($user)) {
-            return Response::denyAsNotFound('Invoice not found.');
-        }
-
-        return true;
-    }
-
-    /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Invoice $invoice): Response|bool
