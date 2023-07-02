@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use AlhajiAki\OtpToken\OtpToken;
-use App\Actions\Auth\VerificationAction;
-use App\Enums\VerificationType;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Shared\Auth\VerificationRequest;
-use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
@@ -38,12 +33,12 @@ class EmailVerificationController extends Controller
         abort_if($user->hasVerifiedEmail(), 403, 'Your email address is already verified.');
 
         // @phpstan-ignore-next-line
-        if (!hash_equals($request->route('id'), (string) $user->uuid)) {
+        if (! hash_equals($request->route('id'), (string) $user->uuid)) {
             throw new AuthorizationException;
         }
 
         // @phpstan-ignore-next-line
-        if (!hash_equals($request->route('hash'), sha1($user->getEmailForVerification()))) {
+        if (! hash_equals($request->route('hash'), sha1($user->getEmailForVerification()))) {
             throw new AuthorizationException;
         }
 

@@ -6,10 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\AuthenticatedUserResource;
 use App\Models\User;
-use App\Transformers\Store\AuthenticatedUserTransformer;
-use Illuminate\Auth\Events\Attempting;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +36,7 @@ class LoginController extends Controller
         /** @var \App\Models\User */
         $user = User::where('email', $request->input('email'))->firstOrNew();
 
-        if (!$user->exists || !Hash::check($request->validated('password'), $user->getAuthPassword())) {
+        if (! $user->exists || ! Hash::check($request->validated('password'), $user->getAuthPassword())) {
             $this->increaseLoginAttempt();
 
             throw ValidationException::withMessages([
