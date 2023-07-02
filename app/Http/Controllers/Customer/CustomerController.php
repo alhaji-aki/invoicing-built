@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Actions\Customer\FirstOrCreateCustomerAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
@@ -61,14 +62,12 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustomerRequest $request): Responsable
+    public function store(StoreCustomerRequest $request, FirstOrCreateCustomerAction $action): Responsable
     {
-        $data = (array) $request->validated();
-
         /** @var \App\Models\User */
         $user = $request->user();
 
-        $customer = $user->customers()->create($data)->refresh();
+        $customer = $action->execute($user, (array) $request->validated());
 
         return (new CustomerResource($customer))->additional(['message' => 'Customer created successfully.']);
     }
