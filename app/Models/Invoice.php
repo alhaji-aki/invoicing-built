@@ -54,6 +54,11 @@ class Invoice extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     public function invoiceItems(): HasMany
     {
         return $this->hasMany(InvoiceItem::class);
@@ -70,12 +75,12 @@ class Invoice extends Model
 
     public function generateInvoiceNo(): string
     {
-        $invoiceNo = 'INV-'.rand(10000000, 99999999);
+        $invoiceNo = 'INV-' . rand(10000000, 99999999);
 
         while (
             self::query()
-                ->where('invoice_no', $invoiceNo)
-                ->exists()
+            ->where('invoice_no', $invoiceNo)
+            ->exists()
         ) {
             $this->generateInvoiceNo();
         }
