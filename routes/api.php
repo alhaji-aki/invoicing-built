@@ -15,3 +15,6 @@ Route::prefix('auth')->group(function () {
     Route::get('/email/verify/{id}/{hash}', [Auth\EmailVerificationController::class, 'verify'])->name('auth.verification.verify');
     Route::post('/email/resend', [Auth\EmailVerificationController::class, 'resend'])->name('auth.verification.resend');
 });
+
+Route::get('profile', [Profile\ProfileController::class, 'show'])->name('profile.show');
+Route::patch('profile', [Profile\ProfileController::class, 'update'])->name('profile.update');
