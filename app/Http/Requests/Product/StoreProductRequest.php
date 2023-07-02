@@ -23,8 +23,11 @@ class StoreProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var \App\Models\User */
+        $user = $this->user();
+
         return [
-            'title' => ['required', 'string', 'max:255', Rule::unique(Product::class)],
+            'title' => ['required', 'string', 'max:255', Rule::unique(Product::class)->where('user_id', $user->id)],
             'description' => ['nullable', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'gte:0'],
             'quantity' => ['nullable', 'integer', 'gte:0'],

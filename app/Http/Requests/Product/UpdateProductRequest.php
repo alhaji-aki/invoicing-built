@@ -23,11 +23,14 @@ class UpdateProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var \App\Models\User */
+        $user = $this->user();
+
         /** @var \App\Models\Product */
         $product = $this->route('product');
 
         return [
-            'title' => ['nullable', 'string', 'max:255', Rule::unique(Product::class)->ignoreModel($product)],
+            'title' => ['nullable', 'string', 'max:255', Rule::unique(Product::class)->ignoreModel($product)->where('user_id', $user->id)],
             'description' => ['nullable', 'string', 'max:255'],
             'price' => ['nullable', 'numeric', 'gte:0'],
             'quantity' => ['nullable', 'integer', 'gte:0'],
