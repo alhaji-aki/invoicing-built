@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth;
+use App\Http\Controllers\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -18,3 +19,4 @@ Route::prefix('auth')->group(function () {
 
 Route::get('profile', [Profile\ProfileController::class, 'show'])->name('profile.show');
 Route::patch('profile', [Profile\ProfileController::class, 'update'])->name('profile.update');
+Route::patch('profile/password', Profile\PasswordController::class)->name('profile.password.update');
