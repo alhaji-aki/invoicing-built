@@ -32,7 +32,7 @@ class StoreCustomerRequest extends FormRequest
                 Rule::unique(Customer::class)->where('user_id', $user->id),
             ],
             'email' => [
-                'nullable', 'string', 'email', 'max:255',
+                'required', 'string', 'email', 'max:255',
                 Rule::unique(Customer::class)->where('user_id', $user->id),
             ],
         ];
