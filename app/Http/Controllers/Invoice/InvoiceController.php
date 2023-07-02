@@ -9,6 +9,7 @@ use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Stringable;
 
@@ -93,8 +94,10 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(Invoice $invoice): JsonResponse
     {
-        // TODO:
+        $invoice->delete();
+
+        return response()->json(['message' => 'Invoice deleted successfully.']);
     }
 }
