@@ -4,7 +4,7 @@ This is a basic invoicing api for users to manage their invoices.
 
 ## Requirements
 
-- [ ] Implement item creation and inventory tracking to insure the user cannot over sell
+- [x] Implement item creation and inventory tracking to insure the user cannot over sell
 - [ ] An invoice should have issue and due dates
 - [ ] An invoice should have a customer
 - [ ] An invoice can have at least 1 item
