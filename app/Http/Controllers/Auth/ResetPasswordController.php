@@ -16,6 +16,7 @@ class ResetPasswordController extends Controller
      */
     public function __invoke(ResetPasswordRequest $request): JsonResponse
     {
+        /** @var string */
         $response = Password::broker()
             ->reset((array) $request->validated(), function (User $user, string $password) {
                 $user->password = $password;

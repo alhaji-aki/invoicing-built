@@ -8,7 +8,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
@@ -30,7 +29,7 @@ class VerifyEmail extends Notification implements ShouldQueue
     /**
      * Build the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  \App\Models\User  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -38,16 +37,16 @@ class VerifyEmail extends Notification implements ShouldQueue
         $verificationUrl = $this->verificationUrl($notifiable);
 
         return (new MailMessage)
-            ->subject(Lang::get('Verify Email Address'))
-            ->line(Lang::get('Please click the button below to verify your email address.'))
-            ->action(Lang::get('Verify Email Address'), $verificationUrl)
-            ->line(Lang::get('If you did not create an account, no further action is required.'));
+            ->subject('Verify Email Address')
+            ->line('Please click the button below to verify your email address.')
+            ->action('Verify Email Address', $verificationUrl)
+            ->line('If you did not create an account, no further action is required.');
     }
 
     /**
      * Get the verification URL for the given notifiable.
      *
-     * @param  mixed  $notifiable
+     * @param  \App\Models\User  $notifiable
      * @return string
      */
     protected function verificationUrl($notifiable)
@@ -60,6 +59,6 @@ class VerifyEmail extends Notification implements ShouldQueue
                 'hash' => sha1($notifiable->getEmailForVerification()),
             ],
             false
-        ))->prepend(Config::get('invoicing.frontend_url'))->toString();
+        ))->prepend(Config::get('invoicing.frontend_url'))->toString(); // @phpstan-ignore-line
     }
 }

@@ -7,7 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 
 class ResetPassword extends Notification implements ShouldQueue
@@ -24,7 +23,7 @@ class ResetPassword extends Notification implements ShouldQueue
     /**
      * Get the notification's channels.
      *
-     * @param  mixed  $notifiable
+     * @param  \App\Models\User  $notifiable
      * @return array|string
      */
     public function via($notifiable)
@@ -35,25 +34,28 @@ class ResetPassword extends Notification implements ShouldQueue
     /**
      * Build the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  \App\Models\User  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
         $resetUrl = $this->resetUrl($notifiable);
 
+        /** @var int */
+        $expiresIn = config('auth.passwords.'.config('auth.defaults.passwords').'.expire');
+
         return (new MailMessage)
-            ->subject(Lang::get('Reset Password Notification'))
-            ->line(Lang::get('You are receiving this email because we received a password reset request for your account.'))
-            ->action(Lang::get('Reset Password'), $resetUrl)
-            ->line(Lang::get('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.'.config('auth.defaults.passwords').'.expire')]))
-            ->line(Lang::get('If you did not request a password reset, no further action is required.'));
+            ->subject('Reset Password Notification')
+            ->line('You are receiving this email because we received a password reset request for your account.')
+            ->action('Reset Password', $resetUrl)
+            ->line("This password reset link will expire in $expiresIn minutes.")
+            ->line('If you did not request a password reset, no further action is required.');
     }
 
     /**
      * Get the reset URL for the given notifiable.
      *
-     * @param  mixed  $notifiable
+     * @param  \App\Models\User  $notifiable
      * @return string
      */
     protected function resetUrl($notifiable)
@@ -61,6 +63,6 @@ class ResetPassword extends Notification implements ShouldQueue
         return Str::of(route('auth.password.reset', [
             'token' => $this->token,
             'email' => $notifiable->getEmailForPasswordReset(),
-        ], false))->prepend(Config::get('invoicing.frontend_url'))->toString();
+        ], false))->prepend(Config::get('invoicing.frontend_url'))->toString(); // @phpstan-ignore-line
     }
 }

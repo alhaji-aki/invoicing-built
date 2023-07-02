@@ -36,8 +36,8 @@ class LoginController extends Controller
         /** @var \App\Models\User */
         $user = User::where('email', $request->input('email'))->firstOrNew();
 
-        if (! $user->exists || ! Hash::check($request->validated('password'), $user->getAuthPassword())) {
-            $this->increaseLoginAttempt();
+        if (! $user->exists || ! Hash::check($request->string('password'), $user->getAuthPassword())) {
+            $request->increaseLoginAttempt();
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),

@@ -33,7 +33,7 @@ class EmailVerificationController extends Controller
         abort_if($user->hasVerifiedEmail(), 403, 'Your email address is already verified.');
 
         // @phpstan-ignore-next-line
-        if (! hash_equals($request->route('id'), (string) $user->uuid)) {
+        if (! hash_equals((string) $request->route('id'), (string) $user->uuid)) {
             throw new AuthorizationException;
         }
 
