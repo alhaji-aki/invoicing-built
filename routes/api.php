@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\Customer;
+use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\Profile;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,6 @@ Route::apiResource('products', Product\ProductController::class)
 
 Route::apiResource('customers', Customer\CustomerController::class)
     ->scoped(['customer' => 'uuid']);
+
+Route::apiResource('invoices', Invoice\InvoiceController::class)
+    ->scoped(['invoice' => 'uuid']);
