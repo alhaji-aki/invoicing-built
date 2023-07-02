@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth;
+use App\Http\Controllers\Customer;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\Profile;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +25,6 @@ Route::patch('profile/password', Profile\PasswordController::class)->name('profi
 
 Route::apiResource('products', Product\ProductController::class)
     ->scoped(['product' => 'uuid']);
+
+Route::apiResource('customers', Customer\CustomerController::class)
+    ->scoped(['customer' => 'uuid']);
