@@ -54,7 +54,7 @@ class InvoiceController extends Controller
 
                 $state = $request->string('status')->toString();
 
-                abort_if(!in_array($state, $states), 400, 'The status submitted is invalid.');
+                abort_if(! in_array($state, $states), 400, 'The status submitted is invalid.');
 
                 return match ($state) {
                     'pending' => $query->where('due_at', '>', now()),
