@@ -44,7 +44,7 @@ class StoreInvoiceRequest extends FormRequest
                 'required_with:customer.name', 'string', 'email', 'max:255',
                 Rule::unique(Customer::class, 'email')->where('user_id', $user->id),
             ],
-            'issued_at' => ['nullable', 'date', 'before_or_equal:today'],
+            'issued_at' => ['nullable', 'date', 'before_or_equal:now'],
             'due_at' => ['required', 'date', 'after:issued_at'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.product_id' => [
