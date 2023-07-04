@@ -1,13 +1,9 @@
 <?php
 
-use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\Product;
 use App\Models\User;
-use Illuminate\Testing\Fluent\AssertableJson;
-
-use function Pest\Laravel\{actingAs, deleteJson};
-use function Pest\Faker\fake;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\deleteJson;
 
 it('unauthenticated users cannot delete invoice', function () {
     $invoice = Invoice::factory()->create();
@@ -25,7 +21,7 @@ it('unverified users cannot delete invoice', function () {
     actingAs($user)
         ->deleteJson(route('invoices.destroy', $invoice))
         ->assertForbidden()
-        ->assertJson(['message' => "Your email address is not verified."]);
+        ->assertJson(['message' => 'Your email address is not verified.']);
 });
 
 it('users cannot delete invoice that does not belong to them', function () {
