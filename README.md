@@ -26,6 +26,12 @@ This is a basic invoicing api for users to manage their invoices.
 
 ## Testing
 
+Test are written with [Pest](https://pestphp.com). Run the command below to run test.
+
+```bash
+php artisan test
+```
+
 ## License
 
 This app is licensed under MIT license. See [LICENSE](LICENSE) for details.
