@@ -23,7 +23,7 @@ class InvoiceFactory extends Factory
             'customer_id' => fn (array $attributes) => Customer::factory()->for(User::find($attributes['user_id'])),
             'amount' => fake()->numberBetween(100, 1_000),
             'issued_at' => $issuedAt = fake()->dateTimeBetween('-1 month'),
-            'due_at' => fake()->dateTimeBetween($issuedAt, '+1 month')
+            'due_at' => fake()->dateTimeBetween($issuedAt, '+1 month'),
         ];
     }
 }

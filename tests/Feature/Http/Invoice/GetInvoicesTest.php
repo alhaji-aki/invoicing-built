@@ -3,8 +3,8 @@
 use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
-
-use function Pest\Laravel\{actingAs, getJson};
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\getJson;
 
 test('unauthenticated users cannot get invoices', function () {
     getJson(route('invoices.index'))
@@ -18,7 +18,7 @@ test('unverified users cannot get invoices', function () {
     actingAs($user)
         ->getJson(route('invoices.index'))
         ->assertForbidden()
-        ->assertJson(['message' => "Your email address is not verified."]);
+        ->assertJson(['message' => 'Your email address is not verified.']);
 });
 
 test('users will only see invoices belonging to them', function () {
@@ -62,11 +62,11 @@ test('user can filter by a status', function () {
 
     $pastInvoice = Invoice::factory()->for($user)->create([
         'issued_at' => now()->subMonth(),
-        'due_at' => now()->subMonth()->addDays(15)
+        'due_at' => now()->subMonth()->addDays(15),
     ]);
     $pendingInvoice = Invoice::factory()->for($user)->create([
         'issued_at' => now(),
-        'due_at' => now()->addDays(15)
+        'due_at' => now()->addDays(15),
     ]);
 
     actingAs($user)
