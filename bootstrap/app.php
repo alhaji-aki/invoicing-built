@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         api: __DIR__.'/../routes/api.php',
+        apiPrefix: '',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
@@ -32,7 +33,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (NotFoundHttpException $exception, $request) {
             if ($exception->getPrevious() instanceof ModelNotFoundException) {
-                $modelName = Str::of($exception->getPrevious()->getModel())->afterLast('\\')->snake(' ')->title()->trim()->toString();
+                $modelName = Str::of($exception->getPrevious()->getModel())
+                    ->afterLast('\\')
+                    ->snake(' ')
+                    ->title()
+                    ->trim()
+                    ->toString();
 
                 return response()->json(['message' => "$modelName not found."], 404);
             }

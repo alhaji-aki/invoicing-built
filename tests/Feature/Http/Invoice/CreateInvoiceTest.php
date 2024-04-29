@@ -1,8 +1,12 @@
 <?php
 
+use App\Jobs\Customer\CreatePaystackCustomer;
+use App\Jobs\Invoice\GeneratePaymentLink;
+use App\Jobs\Invoice\SendNotificationToCustomer;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 use function Pest\Faker\fake;
@@ -34,6 +38,8 @@ it('creating invoice request is validated', function () {
 });
 
 it('creates and returns invoice in response', function () {
+    Bus::fake();
+
     /** @var \Illuminate\Contracts\Auth\Authenticatable */
     $user = User::factory()->create();
     $customer = Customer::factory()->for($user)->create();
@@ -69,4 +75,10 @@ it('creates and returns invoice in response', function () {
                     ])->has('invoice_items', 3);
                 });
         });
+
+    Bus::assertChained([
+        CreatePaystackCustomer::class,
+        GeneratePaymentLink::class,
+        SendNotificationToCustomer::class,
+    ]);
 });

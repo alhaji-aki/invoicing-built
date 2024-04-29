@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Http::macro('paystack', function () {
+            return Http::asJson()
+                ->throwIf(fn (Response $response) => $response->serverError())
+                ->acceptJson()
+                ->withToken(config('paystack.secret_key')) // @phpstan-ignore-line
+                ->baseUrl('https://api.paystack.co');
+        });
     }
 }

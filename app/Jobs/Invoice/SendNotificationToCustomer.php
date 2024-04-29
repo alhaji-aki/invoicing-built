@@ -2,6 +2,8 @@
 
 namespace App\Jobs\Invoice;
 
+use App\Models\Invoice;
+use App\Notifications\Invoice\NewInvoice;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,9 +17,8 @@ class SendNotificationToCustomer implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(public Invoice $invoice)
     {
-        //
     }
 
     /**
@@ -25,6 +26,6 @@ class SendNotificationToCustomer implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+        $this->invoice->customer?->notify(new NewInvoice($this->invoice));
     }
 }

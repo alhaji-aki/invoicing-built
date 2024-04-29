@@ -6,11 +6,16 @@ use App\Actions\Invoice\CreateInvoiceAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invoice\StoreInvoiceRequest;
 use App\Http\Resources\InvoiceResource;
+use App\Jobs\Customer\CreatePaystackCustomer;
+use App\Jobs\Invoice\GeneratePaymentLink;
+use App\Jobs\Invoice\SendNotificationToCustomer;
+use App\Models\Customer;
 use App\Models\Invoice;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Stringable;
 
 class InvoiceController extends Controller
@@ -77,6 +82,12 @@ class InvoiceController extends Controller
         $user = $request->user();
 
         $invoice = $createInvoiceAction->execute($user, (array) $request->validated());
+
+        Bus::chain([
+            new CreatePaystackCustomer($invoice->customer ?? new Customer()),
+            new GeneratePaymentLink($invoice),
+            new SendNotificationToCustomer($invoice),
+        ])->dispatch();
 
         return (new InvoiceResource($invoice))->additional(['message' => 'Invoice created successfully.']);
     }
