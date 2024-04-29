@@ -4,6 +4,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\postJson;

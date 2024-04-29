@@ -9,8 +9,9 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
-use function Pest\Faker\fake;
 use Tests\TestCase;
+
+use function Pest\Faker\fake;
 
 uses(
     TestCase::class,
