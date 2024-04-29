@@ -32,3 +32,6 @@ Route::apiResource('customers', Customer\CustomerController::class)
 
 Route::apiResource('invoices', Invoice\InvoiceController::class)
     ->scoped(['invoice' => 'uuid']);
+
+Route::post('invoices/{invoice:uuid}/resend', Invoice\ResendNotificationController::class)
+    ->name('invoices.resend');
