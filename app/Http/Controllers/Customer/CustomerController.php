@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Resources\CustomerResource;
+use App\Jobs\Customer\CreatePaystackCustomer;
 use App\Models\Customer;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,6 +69,8 @@ class CustomerController extends Controller
         $user = $request->user();
 
         $customer = $action->execute($user, (array) $request->validated());
+
+        CreatePaystackCustomer::dispatch($customer);
 
         return (new CustomerResource($customer))->additional(['message' => 'Customer created successfully.']);
     }

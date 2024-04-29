@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\InvoiceStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,8 @@ class Invoice extends Model
         'amount',
         'issued_at',
         'due_at',
+        'amount_paid',
+        'request_code',
     ];
 
     /**
@@ -37,6 +40,7 @@ class Invoice extends Model
     {
         return [
             'amount' => 'integer',
+            'amount_paid' => 'integer',
             'issued_at' => 'datetime',
             'due_at' => 'datetime',
         ];
@@ -104,6 +108,71 @@ class Invoice extends Model
     {
         return Attribute::make(
             get: fn () => $this->amount / 100
+        );
+    }
+
+    /** @return Attribute<never, int> */
+    protected function amountPaid(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => intval($value * 100),
+        );
+    }
+
+    /** @return Attribute<float, void> */
+    protected function formattedAmountPaid(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->amount_paid / 100
+        );
+    }
+
+    /** @return Attribute<int, never> */
+    protected function amountOwing(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => $this->amount - $this->amount_paid,
+        );
+    }
+
+    /** @return Attribute<float, void> */
+    protected function formattedAmountOwing(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->amount_owing / 100
+        );
+    }
+
+    /** @return Attribute<InvoiceStatus, never> */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                if ($this->amount_owing == $this->amount) {
+                    return InvoiceStatus::PENDING;
+                }
+
+                if ($this->amount_owing <= 0) {
+                    return InvoiceStatus::PAID;
+                }
+
+                return InvoiceStatus::PARTLY_PAID;
+            },
+        );
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never> */
+    protected function paymentLink(): Attribute
+    {
+        return Attribute::make(
+            // @phpstan-ignore-next-line
+            get: function ($value, array $attributes): ?string {
+                if ($this->request_code) {
+                    return config('paystack.payment_url').'/'.$this->request_code;
+                }
+
+                return null;
+            }
         );
     }
 }

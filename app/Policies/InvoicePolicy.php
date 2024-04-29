@@ -45,6 +45,22 @@ class InvoicePolicy
             return Response::denyAsNotFound('Invoice not found.');
         }
 
+        // TODO: cannot delete paid invoices
+
+        return true;
+    }
+
+    /**
+     * Determine whether the user can resend the model.
+     */
+    public function resend(User $user, Invoice $invoice): Response|bool
+    {
+        if ($invoice->user()->isNot($user)) {
+            return Response::denyAsNotFound('Invoice not found.');
+        }
+
+        // TODO: cannot resend paid invoices
+
         return true;
     }
 }
