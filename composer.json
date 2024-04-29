@@ -1,10 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "alhaji-aki/invoicing-built",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "An Invoicing app api",
     "keywords": [
-        "laravel",
-        "framework"
+        "invoicing",
+        "backend",
+        "api"
     ],
     "license": "MIT",
     "require": {
