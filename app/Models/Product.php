@@ -27,14 +27,17 @@ class Product extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'quantity' => 'integer',
-        'price' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'quantity' => 'integer',
+            'price' => 'integer',
+        ];
+    }
 
     /**
      * Get the columns that should receive a unique identifier.

@@ -27,15 +27,18 @@ class InvoiceItem extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'unit_price' => 'integer',
-        'quantity' => 'integer',
-        'amount' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'unit_price' => 'integer',
+            'quantity' => 'integer',
+            'amount' => 'integer',
+        ];
+    }
 
     /**
      * Get the columns that should receive a unique identifier.

@@ -1,55 +1,44 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Create The Application
-|--------------------------------------------------------------------------
-|
-| The first thing we will do is create a new Laravel application instance
-| which serves as the "glue" for all the components of Laravel, and is
-| the IoC container for the system binding all of the various parts.
-|
-*/
+use App\Http\Middleware\ForceJsonResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-$app = new Illuminate\Foundation\Application(
-    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
-);
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+        then: function () {
+            Route::middleware('web')
+                ->prefix('webhooks')
+                ->name('webhooks.')
+                ->group(base_path('routes/webhook.php'));
+        }
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->api(
+            prepend: [ForceJsonResponse::class]
+        );
 
-/*
-|--------------------------------------------------------------------------
-| Bind Important Interfaces
-|--------------------------------------------------------------------------
-|
-| Next, we need to bind some important interfaces into the container so
-| we will be able to resolve them when needed. The kernels serve the
-| incoming requests to this application from both the web and CLI.
-|
-*/
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/*',
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->renderable(function (NotFoundHttpException $exception, $request) {
+            if ($exception->getPrevious() instanceof ModelNotFoundException) {
+                $modelName = Str::of($exception->getPrevious()->getModel())->afterLast('\\')->snake(' ')->title()->trim()->toString();
 
-$app->singleton(
-    Illuminate\Contracts\Http\Kernel::class,
-    App\Http\Kernel::class
-);
+                return response()->json(['message' => "$modelName not found."], 404);
+            }
 
-$app->singleton(
-    Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
-);
-
-$app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
-);
-
-/*
-|--------------------------------------------------------------------------
-| Return The Application
-|--------------------------------------------------------------------------
-|
-| This script returns the application instance. The instance is given to
-| the calling script so we can separate the building of the instances
-| from the actual running of the application and sending responses.
-|
-*/
-
-return $app;
+            return response()->json([
+                'message' => 'Resource is not available.',
+            ], 404);
+        });
+    })->create();

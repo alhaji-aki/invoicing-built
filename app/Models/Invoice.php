@@ -29,15 +29,18 @@ class Invoice extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'amount' => 'integer',
-        'issued_at' => 'datetime',
-        'due_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'amount' => 'integer',
+            'issued_at' => 'datetime',
+            'due_at' => 'datetime',
+        ];
+    }
 
     /**
      * Get the columns that should receive a unique identifier.
