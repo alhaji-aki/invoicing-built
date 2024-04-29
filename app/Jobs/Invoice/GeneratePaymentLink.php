@@ -63,7 +63,7 @@ class GeneratePaymentLink implements ShouldQueue
             'send_notification' => false,
         ])->object();
 
-        if (!$response->status) {
+        if (! $response->status) {
             throw new Exception("Could not create payment request. Reason: {$response->message}");
         }
 
