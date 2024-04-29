@@ -11,6 +11,10 @@ This is a basic invoicing api for users to manage their invoices.
 - [x] An invoice can have at least 1 item
 - [x] Each item should have unit price, quantity, amount and description
 - [x] User Authentication and authorization
+- [ ] Generate Payment Link for invoice
+- [ ] Send Payment link to customers after invoice creation
+- [ ] Use Paystack invoices to receive payment from customers
+- [ ] Allow users to be able to resend invoice payment links to customers
 
 ## Project Setup
 
@@ -20,6 +24,7 @@ This is a basic invoicing api for users to manage their invoices.
 - Run `php artisan key:generate` to generate app key
 - Fill database and mail credentials in `.env` file
 - Set the `APP_FRONTEND_URL` key in the `.env` to the base url of your frontend application
+- Get your payment keys from [Paystack](https://paystack.com/) and set them in the `.env`
 - Run `php artisan migrate --seed`, this will seed a default user with email `user@invoicing-app.test` and password `password`
 - Start queue worker using `php artisan queue:listen` or `php artisan queue:work` if your `QUEUE_CONNECTION` in the `.env` file is not sync
 - You can get entire postman collection documentation [here](https://documenter.getpostman.com/view/2848345/2s93zB6hgy)
