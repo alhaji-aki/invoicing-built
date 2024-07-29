@@ -16,9 +16,7 @@ class ResetPassword extends Notification implements ShouldQueue
     /**
      * Create a notification instance.
      */
-    public function __construct(public string $token)
-    {
-    }
+    public function __construct(public string $token) {}
 
     /**
      * Get the notification's channels.

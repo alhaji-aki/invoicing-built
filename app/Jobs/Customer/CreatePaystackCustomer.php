@@ -18,9 +18,7 @@ class CreatePaystackCustomer implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public Customer $customer)
-    {
-    }
+    public function __construct(public Customer $customer) {}
 
     /**
      * Execute the job.
