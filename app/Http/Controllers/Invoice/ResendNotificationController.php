@@ -30,7 +30,7 @@ class ResendNotificationController extends Controller
     public function __invoke(Invoice $invoice): JsonResponse
     {
         Bus::chain([
-            new CreatePaystackCustomer($invoice->customer ?? new Customer()),
+            new CreatePaystackCustomer($invoice->customer ?? new Customer),
             new GeneratePaymentLink($invoice),
             new SendNotificationToCustomer($invoice),
         ])->dispatch();

@@ -15,9 +15,7 @@ class PaymentReceived extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
-    public function __construct(public Invoice $invoice, public float|int $amount)
-    {
-    }
+    public function __construct(public Invoice $invoice, public float|int $amount) {}
 
     /**
      * Get the notification's delivery channels.

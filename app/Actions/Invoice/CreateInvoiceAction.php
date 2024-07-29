@@ -16,8 +16,7 @@ class CreateInvoiceAction
 {
     public function __construct(
         private readonly FirstOrCreateCustomerAction $firstOrCreateCustomerAction
-    ) {
-    }
+    ) {}
 
     public function execute(User $user, array $data): Invoice
     {
@@ -78,7 +77,7 @@ class CreateInvoiceAction
 
         return collect($items)
             ->map(function (array $item) use ($products) {
-                $product = $products->where('uuid', $item['product_id'])->first() ?? new Product();
+                $product = $products->where('uuid', $item['product_id'])->first() ?? new Product;
 
                 /** @var array{unit_price: float, product_id: int, amount: float, product: Product, description: string, quantity: int} */
                 return [
