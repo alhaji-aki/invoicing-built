@@ -84,7 +84,7 @@ class InvoiceController extends Controller
         $invoice = $createInvoiceAction->execute($user, (array) $request->validated());
 
         Bus::chain([
-            new CreatePaystackCustomer($invoice->customer ?? new Customer()),
+            new CreatePaystackCustomer($invoice->customer ?? new Customer),
             new GeneratePaymentLink($invoice),
             new SendNotificationToCustomer($invoice),
         ])->dispatch();

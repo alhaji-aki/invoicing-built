@@ -20,9 +20,7 @@ class GeneratePaymentLink implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public Invoice $invoice)
-    {
-    }
+    public function __construct(public Invoice $invoice) {}
 
     /**
      * Execute the job.

@@ -15,9 +15,7 @@ class NewInvoice extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
-    public function __construct(public Invoice $invoice)
-    {
-    }
+    public function __construct(public Invoice $invoice) {}
 
     /**
      * Get the notification's delivery channels.
