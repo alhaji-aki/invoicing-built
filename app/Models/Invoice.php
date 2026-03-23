@@ -161,7 +161,7 @@ class Invoice extends Model
         );
     }
 
-    /** @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never> */
+    /** @return Attribute<string, never> */
     protected function paymentLink(): Attribute
     {
         return Attribute::make(

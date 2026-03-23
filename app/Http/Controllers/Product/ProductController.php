@@ -7,6 +7,7 @@ use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +33,7 @@ class ProductController extends Controller
      */
     public function index(Request $request): Responsable
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $products = $user->products()
@@ -69,7 +70,7 @@ class ProductController extends Controller
     {
         $data = (array) $request->validated();
 
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $product = $user->products()->create($data)->refresh();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdatePasswordRequest;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class PasswordController extends Controller
@@ -23,7 +24,7 @@ class PasswordController extends Controller
      */
     public function __invoke(UpdatePasswordRequest $request): JsonResponse
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $user->update([

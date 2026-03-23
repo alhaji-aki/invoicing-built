@@ -2,6 +2,7 @@
 
 use App\Models\Invoice;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 use function Pest\Laravel\actingAs;
@@ -15,7 +16,7 @@ test('unauthenticated users cannot get invoice', function () {
 });
 
 test('unverified users cannot get invoice', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->unverified()->create();
 
     $invoice = Invoice::factory()->create();
@@ -27,7 +28,7 @@ test('unverified users cannot get invoice', function () {
 });
 
 test('users cannot get invoice that does not belong to them', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     $invoice = Invoice::factory()->create();
@@ -38,7 +39,7 @@ test('users cannot get invoice that does not belong to them', function () {
 });
 
 test('user gets a single invoice', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     $invoice = Invoice::factory()->for($user)->create();

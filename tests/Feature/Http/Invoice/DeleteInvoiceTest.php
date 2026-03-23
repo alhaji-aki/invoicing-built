@@ -2,6 +2,7 @@
 
 use App\Models\Invoice;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\deleteJson;
@@ -14,7 +15,7 @@ it('unauthenticated users cannot delete invoice', function () {
 });
 
 it('unverified users cannot delete invoice', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->unverified()->create();
 
     $invoice = Invoice::factory()->create();
@@ -26,7 +27,7 @@ it('unverified users cannot delete invoice', function () {
 });
 
 it('users cannot delete invoice that does not belong to them', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     $invoice = Invoice::factory()->create();
@@ -39,7 +40,7 @@ it('users cannot delete invoice that does not belong to them', function () {
 });
 
 it('deletes the invoice from the database', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     $invoice = Invoice::factory()->for($user)->create();

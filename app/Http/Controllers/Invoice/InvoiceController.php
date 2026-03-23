@@ -11,6 +11,7 @@ use App\Jobs\Invoice\GeneratePaymentLink;
 use App\Jobs\Invoice\SendNotificationToCustomer;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\User;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -37,7 +38,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request): Responsable
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $invoices = $user->invoices()
@@ -78,7 +79,7 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoiceRequest $request, CreateInvoiceAction $createInvoiceAction): Responsable
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $invoice = $createInvoiceAction->execute($user, (array) $request->validated());

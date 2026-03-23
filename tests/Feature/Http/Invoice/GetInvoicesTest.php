@@ -2,6 +2,7 @@
 
 use App\Models\Invoice;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 use function Pest\Laravel\actingAs;
@@ -13,7 +14,7 @@ test('unauthenticated users cannot get invoices', function () {
 });
 
 test('unverified users cannot get invoices', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->unverified()->create();
 
     actingAs($user)
@@ -23,7 +24,7 @@ test('unverified users cannot get invoices', function () {
 });
 
 test('users will only see invoices belonging to them', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     Invoice::factory()->for($user)->create();
@@ -44,7 +45,7 @@ test('users will only see invoices belonging to them', function () {
 });
 
 test('user can search by an invoice number', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     $invoice = Invoice::factory()->for($user)->create();
@@ -58,7 +59,7 @@ test('user can search by an invoice number', function () {
 });
 
 test('user can filter by a status', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     $pastInvoice = Invoice::factory()->for($user)->create([

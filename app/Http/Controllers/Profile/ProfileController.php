@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Http\Resources\AuthenticatedUserResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,7 @@ class ProfileController extends Controller
 
         abort_if(empty($data), 400, 'No data submitted.');
 
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $emailHasChanged = isset($data['email']) && $data['email'] !== $user->email;

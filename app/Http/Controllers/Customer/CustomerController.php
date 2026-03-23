@@ -9,6 +9,7 @@ use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Jobs\Customer\CreatePaystackCustomer;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -34,7 +35,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request): Responsable
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $customers = $user->customers()
@@ -65,7 +66,7 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request, FirstOrCreateCustomerAction $action): Responsable
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         $customer = $action->execute($user, (array) $request->validated());
