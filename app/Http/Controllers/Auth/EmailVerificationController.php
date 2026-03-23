@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +28,7 @@ class EmailVerificationController extends Controller
      */
     public function verify(Request $request): JsonResponse
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         abort_if($user->hasVerifiedEmail(), 403, 'Your email address is already verified.');
@@ -56,7 +57,7 @@ class EmailVerificationController extends Controller
      */
     public function resend(Request $request): JsonResponse
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
         abort_if($user->hasVerifiedEmail(), 403, 'Your email address is already verified.');

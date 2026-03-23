@@ -25,7 +25,7 @@ class UpdateInvoiceAmount implements ShouldQueue
      */
     public function handle(): void
     {
-        /** @var \App\Models\Invoice */
+        /** @var Invoice */
         $invoice = Invoice::query()->with(['customer'])->where('request_code', $this->data['request_code'])->firstOrNew();
 
         if (! $invoice->exists) {

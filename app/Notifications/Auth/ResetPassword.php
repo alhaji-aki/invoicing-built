@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Auth;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -21,7 +22,7 @@ class ResetPassword extends Notification implements ShouldQueue
     /**
      * Get the notification's channels.
      *
-     * @param  \App\Models\User  $notifiable
+     * @param  User  $notifiable
      * @return array|string
      */
     public function via($notifiable)
@@ -32,8 +33,8 @@ class ResetPassword extends Notification implements ShouldQueue
     /**
      * Build the mail representation of the notification.
      *
-     * @param  \App\Models\User  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param  User  $notifiable
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -53,7 +54,7 @@ class ResetPassword extends Notification implements ShouldQueue
     /**
      * Get the reset URL for the given notifiable.
      *
-     * @param  \App\Models\User  $notifiable
+     * @param  User  $notifiable
      * @return string
      */
     protected function resetUrl($notifiable)

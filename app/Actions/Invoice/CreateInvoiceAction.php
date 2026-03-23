@@ -24,7 +24,7 @@ class CreateInvoiceAction
 
         $this->validateInvoiceItems($invoiceItems);
 
-        /** @var \App\Models\Invoice */
+        /** @var Invoice */
         return DB::transaction(function () use ($user, $data, $invoiceItems) {
             $amount = $invoiceItems->sum('amount');
 
@@ -32,7 +32,7 @@ class CreateInvoiceAction
             $customer = $this->firstOrCreateCustomerAction->execute($user, $data['customer']);
 
             // create invoice
-            /** @var \App\Models\Invoice */
+            /** @var Invoice */
             $invoice = $user->invoices()->create([
                 'customer_id' => $customer->id,
                 'amount' => $amount,
@@ -45,7 +45,7 @@ class CreateInvoiceAction
                 ->createMany($invoiceItems)
                 // reduce product quantity for products selected
                 ->map(function (InvoiceItem $invoiceItem) use ($invoiceItems) {
-                    /** @var \App\Models\Product */
+                    /** @var Product */
                     $product = $invoiceItems->where('product.id', $invoiceItem->product_id)->firstOrFail()['product'];
 
                     $product->decrement('quantity', $invoiceItem->quantity);

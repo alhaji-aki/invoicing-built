@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class LoginController extends Controller
 {
@@ -27,13 +28,13 @@ class LoginController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(LoginRequest $request): JsonResponse
     {
         $request->ensureIsNotRateLimited();
 
-        /** @var \App\Models\User */
+        /** @var User */
         $user = User::where('email', $request->input('email'))->firstOrNew();
 
         if (! $user->exists || ! Hash::check($request->string('password'), $user->getAuthPassword())) {
@@ -60,10 +61,10 @@ class LoginController extends Controller
      */
     public function destroy(Request $request): JsonResponse
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = $request->user();
 
-        /** @var \Laravel\Sanctum\PersonalAccessToken */
+        /** @var PersonalAccessToken */
         $token = $user->currentAccessToken();
 
         $token->delete();

@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Auth;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -29,8 +30,8 @@ class VerifyEmail extends Notification implements ShouldQueue
     /**
      * Build the mail representation of the notification.
      *
-     * @param  \App\Models\User  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param  User  $notifiable
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -46,7 +47,7 @@ class VerifyEmail extends Notification implements ShouldQueue
     /**
      * Get the verification URL for the given notifiable.
      *
-     * @param  \App\Models\User  $notifiable
+     * @param  User  $notifiable
      * @return string
      */
     protected function verificationUrl($notifiable)

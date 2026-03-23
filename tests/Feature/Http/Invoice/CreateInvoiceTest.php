@@ -6,6 +6,7 @@ use App\Jobs\Invoice\SendNotificationToCustomer;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -19,7 +20,7 @@ it('unauthenticated users cannot create invoice', function () {
 });
 
 it('unverified users cannot create invoice', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->unverified()->create();
 
     actingAs($user)
@@ -29,7 +30,7 @@ it('unverified users cannot create invoice', function () {
 });
 
 it('creating invoice request is validated', function () {
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
 
     actingAs($user)
@@ -40,7 +41,7 @@ it('creating invoice request is validated', function () {
 it('creates and returns invoice in response', function () {
     Bus::fake();
 
-    /** @var \Illuminate\Contracts\Auth\Authenticatable */
+    /** @var Authenticatable */
     $user = User::factory()->create();
     $customer = Customer::factory()->for($user)->create();
     $items = Product::factory()->for($user)
